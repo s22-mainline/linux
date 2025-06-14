@@ -22,7 +22,7 @@
 /delete-node/ &trusted_apps_mem;
 /delete-node/ &trusted_apps_ext_mem;
 
-& {
+/ {
 	chassis-type = "handset";
 	model = "Samsung Galaxy S22 5G (SM-S901E)";
 	compatible = "samsung,r0q", "qcom,sm8450";
