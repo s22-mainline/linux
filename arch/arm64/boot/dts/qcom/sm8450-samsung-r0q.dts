@@ -30,86 +30,86 @@
 
 	chosen {
 		#address-cells = <2>;
-        	#size-cells = <2>;
-        	ranges;
+		#size-cells = <2>;
+		ranges;
 
-        	bootargs = "PMOS_NOSPLASH clk_ignore_unused pd_ignore_unused";
-        	linux,initrd-start = <0x00 0xb6915000>;
-        	linux,initrd-end = <0x00 0xb7fff22c>;
-        	stdout-path = "serial0:115200n8";
+		bootargs = "PMOS_NOSPLASH clk_ignore_unused pd_ignore_unused";
+		linux,initrd-start = <0x00 0xb6915000>;
+		linux,initrd-end = <0x00 0xb7fff22c>;
+		stdout-path = "serial0:115200n8";
 
-        	framebuffer: framebuffer@b8000000 {
-         	   compatible = "simple-framebuffer";
-         	   reg = <0x0 0xb8000000 0x0 0x2b00000>;
-         	   width = <1080>;
-         	   height = <2340>;
-         	   stride = <(1080 * 4)>;
-         	   format = "a8r8g8b8";
-        	};
-    	};
+		framebuffer: framebuffer@b8000000 {
+			compatible = "simple-framebuffer";
+			reg = <0x0 0xb8000000 0x0 0x2b00000>;
+			width = <1080>;
+			height = <2340>;
+			stride = <(1080 * 4)>;
+			format = "a8r8g8b8";
+		};
+	};
 
-    	gpio-keys {
-        	compatible = "gpio-keys";
-        	autorepeat;
+	gpio-keys {
+		compatible = "gpio-keys";
+		autorepeat;
 
-        	pinctrl-0 = <&vol_up_n>;
-        	pinctrl-names = "default";
+		pinctrl-0 = <&vol_up_n>;
+		pinctrl-names = "default";
 
-        	key-vol-up {
-            		label = "Volume Up";
-            		linux,code = <KEY_VOLUMEUP>;
-            		gpios = <&pm8350_gpios 6 GPIO_ACTIVE_LOW>;
-            		debounce-interval = <15>;
-        	};
-    	};
+		key-vol-up {
+		label = "Volume Up";
+		linux,code = <KEY_VOLUMEUP>;
+		gpios = <&pm8350_gpios 6 GPIO_ACTIVE_LOW>;
+		debounce-interval = <15>;
+		};
+	};
 
-    	memory {
-    		ddr_device_type = <0x08>;
-    		device_type = "memory";
-		reg = <0x00 0x80000000 0x00 0x6a000000 0x00 0xf1c00000 0x00 0xe400000 0x08 0x00 0x00 0x3ab00000 0x08 0x40000000 0x01 0x40000000 0x08 0x3b100000 0x00 0x1e00000>;
-    	};
+	memory {
+	ddr_device_type = <0x08>;
+	device_type = "memory";
+	reg = <0x00 0x80000000 0x00 0x6a000000 0x00 0xf1c00000 0x00 0xe400000 0x08 0x00 0x00 0x3ab00000 0x08 0x40000000 0x01 0x40000000 0x08 0x3b100000 0x00 0x1e00000>;
+	};
 
-    	reserved-memory {
-        	xbl_ramdump_mem: memory@a6b80000 {
-            		reg = <0x0 0xa7d00000 0x0 0x300000>;
-            		no-map;
-        	};
+	reserved-memory {
+		xbl_ramdump_mem: memory@a6b80000 {
+			reg = <0x0 0xa7d00000 0x0 0x300000>;
+			no-map;
+		};
 
-        	xbl_sc_mem: memory@a6e00000 {
-            		reg = <0x0 0xa6e00000 0x0 0x40000>;
-            		no-map;
-        	};
+		xbl_sc_mem: memory@a6e00000 {
+			reg = <0x0 0xa6e00000 0x0 0x40000>;
+			no-map;
+		};
 
-        	adsp_mem: memory@9fd00000 {
-            		reg = <0x0 0x84500000 0x0 0x3b00000>;
-            		no-map;
-        	};
+		adsp_mem: memory@9fd00000 {
+			reg = <0x0 0x84500000 0x0 0x3b00000>;
+			no-map;
+		};
 
-        	rmtfs_mem: memory@fe200000 {
-            		compatible = "qcom,rmtfs-mem";
-            		reg = <0x0 0xfe200000 0x0 0x280000>;
-            		reg-names = "rmtfs";
-            		qcom,client-id = <1>;
-            		no-map;
+		rmtfs_mem: memory@fe200000 {
+			compatible = "qcom,rmtfs-mem";
+			reg = <0x0 0xfe200000 0x0 0x280000>;
+			reg-names = "rmtfs";
+			qcom,client-id = <1>;
+			no-map;
 
-            		qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
-        	};
+			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
+		};
 
-        	splash_region@b8000000 {
-            		reg = <0x0 0xb8000000 0x0 0x2b00000>;
-            		no-map;
-        	};
-    	};
+		splash_region@b8000000 {
+			reg = <0x0 0xb8000000 0x0 0x2b00000>;
+			no-map;
+		};
+	};
 
-    	vph_pwr: vph-pwr-regulator {
-        	compatible = "regulator-fixed";
-        	regulator-name = "vph_pwr";
-        	regulator-min-microvolt = <3700000>;
-        	regulator-max-microvolt = <3700000>;
+	vph_pwr: vph-pwr-regulator {
+		compatible = "regulator-fixed";
+		regulator-name = "vph_pwr";
+		regulator-min-microvolt = <3700000>;
+		regulator-max-microvolt = <3700000>;
 
-        	regulator-always-on;
-        	regulator-boot-on;
-    	};
+		regulator-always-on;
+		regulator-boot-on;
+	};
 };
 
 &tlmm {
@@ -121,7 +121,7 @@
 		drive-strength = <8>;
 		bias-disable;
 	};
-    
+
 	dsi_suspend: dsi-suspend-state {
 		pins = "gpio6";
 		function = "gpio";
@@ -172,7 +172,7 @@
 			regulator-max-microvolt = <920000>;
 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
 		};
-		
+
 		vreg_l2b_3p07: ldo2 {
 			regulator-name = "vreg_l2b_3p07";
 			regulator-min-microvolt = <3072000>;
@@ -328,7 +328,7 @@
 &usb_1_dwc3 {
 	dr_mode = "peripheral";
 	maximum-speed = "high-speed";
-    
+
 	phys = <&usb_1_hsphy>;
 	phy-names = "usb2-phy";
 };
@@ -342,7 +342,7 @@
 
 &ufs_mem_hc {
 	reset-gpios = <&tlmm 210 GPIO_ACTIVE_LOW>;
-	
+
 	vcc-supply = <&vreg_l7b_2p5>;
 	vcc-max-microamp = <1100000>;
 	vccq-supply = <&vreg_l9b_1p2>;
