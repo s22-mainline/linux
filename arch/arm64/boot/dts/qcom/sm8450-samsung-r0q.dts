@@ -23,56 +23,52 @@
 /delete-node/ &trusted_apps_ext_mem;
 
 / {
-	chassis-type = "handset";
-	model = "Samsung Galaxy S22 5G (SM-S901E)";
-	compatible = "samsung,r0q", "qcom,sm8450";
+    chassis-type = "handset";
+    model = "Samsung Galaxy S22";
+    compatible = "samsung,r0q", "qcom,sm8450";
 
-	chosen {
-		#address-cells = <2>;
-		#size-cells = <2>;
-		ranges;
+    chosen {
+        #address-cells = <2>;
+        #size-cells = <2>;
+        ranges;
 
-		bootargs = "clk_ignore_unused pd_ignore_unused";
+        bootargs = "PMOS_NOSPLASH clk_ignore_unused pd_ignore_unused";
 		linux,initrd-start = <0x00 0xb6915000>;
-		linux,initrd-end   = <0x00 0xb7fff22c>;
-		stdout-path = "serial0:115200n8";
+		linux,initrd-end = <0x00 0xb7fff22c>;
+        stdout-path = "serial0:115200n8";
+    
+        framebuffer: framebuffer@b8000000 {
+            compatible = "simple-framebuffer";
+            reg = <0x0 0xb8000000 0x0 0x2b00000>;
+            width = <1080>;
+            height = <2340>;
+            stride = <(1080 * 4)>;
+            format = "a8r8g8b8";
+        };
+    };
 
-		framebuffer: framebuffer@b8000000 {
-			compatible = "simple-framebuffer";
-			reg = <0x0 0xb8000000 0x0 0x2b00000>;
-			width = <1080>;
-			height = <2340>;
-			stride = <(1080 * 4)>;
-			format = "a8r8g8b8";
-		};
-	};
+    gpio-keys {
+    	compatible = "gpio-keys";
+    	autorepeat;
+    	
+    	pinctrl-0 = <&vol_up_n>;
+    	pinctrl-names = "default";
+    
+    	key-vol-up {
+    		label = "Volume Up";
+    		linux,code = <KEY_VOLUMEUP>;
+    		gpios = <&pm8350_gpios 6 GPIO_ACTIVE_LOW>;
+    		debounce-interval = <15>;
+    	};
+    };
 
-	gpio-keys {
-		compatible = "gpio-keys";
-		autorepeat;
+    memory {
+    	ddr_device_type = <0x08>;
+    	device_type = "memory";
+    	reg = <0x00 0x80000000 0x00 0x6a000000 0x00 0xf1c00000 0x00 0xe400000 0x08 0x00 0x00 0x3ab00000 0x08 0x40000000 0x01 0x40000000 0x08 0x3b100000 0x00 0x1e00000>;
+    };
 
-		pinctrl-0 = <&vol_up_n>;
-		pinctrl-names = "default";
-
-		key-vol-up {
-			label = "Volume Up";
-			linux,code = <KEY_VOLUMEUP>;
-			gpios = <&pm8350_gpios 6 GPIO_ACTIVE_LOW>;
-			debounce-interval = <15>;
-		};
-	};
-
-	memory {
-		ddr_device_type = <0x08>;
-		device_type = "memory";
-		reg = <0x00 0x80000000 0x00 0x6a000000
-		       0x00 0xf1c00000 0x00 0xe400000
-		       0x08 0x00       0x00 0x3ab00000
-		       0x08 0x40000000 0x01 0x40000000
-		       0x08 0x3b100000 0x00 0x1e00000>;
-	};
-
-	reserved-memory {
+    reserved-memory {
 		xbl_ramdump_mem: memory@a6b80000 {
 			reg = <0x0 0xa7d00000 0x0 0x300000>;
 			no-map;
@@ -94,31 +90,33 @@
 			reg-names = "rmtfs";
 			qcom,client-id = <1>;
 			no-map;
+
 			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
 		};
-
+		
 		splash_region@b8000000 {
 			reg = <0x0 0xb8000000 0x0 0x2b00000>;
 			no-map;
 		};
-	};
+    };
 
-	battery: battery {
-		compatible = "simple-battery";
-		charge-full-design-microamp-hours = <4520000>;
-		energy-full-design-microwatt-hours = <17500000>;
-		voltage-min-design-microvolt = <3400000>;
-		voltage-max-design-microvolt = <4460000>;
-	};
+    battery: battery {
+        compatible = "simple-battery";
+        charge-full-design-microamp-hours = <4520000>;
+        energy-full-design-microwatt-hours = <17500000>;
+        voltage-min-design-microvolt = <3400000>;
+        voltage-max-design-microvolt = <4460000>;
+    };
 
-	vph_pwr: vph-pwr-regulator {
-		compatible = "regulator-fixed";
-		regulator-name = "vph_pwr";
-		regulator-min-microvolt = <3700000>;
-		regulator-max-microvolt = <3700000>;
-		regulator-always-on;
-		regulator-boot-on;
-	};
+    vph_pwr: vph-pwr-regulator {
+    	compatible = "regulator-fixed";
+    	regulator-name = "vph_pwr";
+    	regulator-min-microvolt = <3700000>;
+    	regulator-max-microvolt = <3700000>;
+    
+    	regulator-always-on;
+    	regulator-boot-on;
+    };
 };
 
 &tlmm {
@@ -128,15 +126,15 @@
 		pins = "gpio6";
 		function = "gpio";
 		drive-strength = <8>;
-		bias-disable;
-	};
-
-	dsi_suspend: dsi-suspend-state {
-		pins = "gpio6";
-		function = "gpio";
-		drive-strength = <2>;
-		bias-pull-down;
-	};
+    		bias-disable;
+    	};
+    
+    	dsi_suspend: dsi-suspend-state {
+    		pins = "gpio6";
+    		function = "gpio";
+    		drive-strength = <2>;
+    		bias-pull-down;
+    	};
 };
 
 &apps_rsc {
@@ -311,11 +309,6 @@
 	};
 };
 
-&i2c5 {
-	clock-frequency = <100000>;
-	status = "okay";
-};
-
 &pm8350_gpios {
 	vol_up_n: vol-up-n-state {
 		pins = "gpio6";
@@ -334,8 +327,28 @@
 	linux,code = <KEY_VOLUMEDOWN>;
 };
 
+&usb_1 {
+	qcom,select-utmi-as-pipe-clk;
+	status = "okay";
+};
+
+&usb_1_dwc3 {
+	dr_mode = "peripheral";
+
+	phys = <&usb_1_hsphy>;
+	phy-names = "usb2-phy";
+};
+
+&usb_1_hsphy {
+	status = "okay";
+	vdda-pll-supply = <&vreg_l5b_0p88>;
+	vdda18-supply = <&vreg_l1c_1p8>;
+	vdda33-supply = <&vreg_l2b_3p07>;
+};
+
 &ufs_mem_hc {
 	reset-gpios = <&tlmm 210 GPIO_ACTIVE_LOW>;
+	
 	vcc-supply = <&vreg_l7b_2p5>;
 	vcc-max-microamp = <1100000>;
 	vccq-supply = <&vreg_l9b_1p2>;
@@ -343,11 +356,13 @@
 	vccq2-supply = <&vreg_l9b_1p2>;
 	vccq2-max-microamp = <1200000>;
 	vdd-hba-supply = <&vreg_l9b_1p2>;
+
 	status = "okay";
 };
 
 &ufs_mem_phy {
 	status = "okay";
-	vdda-phy-supply = <&vreg_l5b_0p88>;
-	vdda-pll-supply = <&vreg_l6b_1p2>;
+
+    	vdda-phy-supply = <&vreg_l5b_0p88>;
+    	vdda-pll-supply = <&vreg_l6b_1p2>;
 };
