@@ -32,9 +32,7 @@
 		#size-cells = <2>;
 		ranges;
 
-		bootargs = "PMOS_NOSPLASH clk_ignore_unused pd_ignore_unused";
-		linux,initrd-start = <0x00 0xb6915000>;
-		linux,initrd-end = <0x00 0xb7fff22c>;
+		bootargs = "clk_ignore_unused pd_ignore_unused";
 		stdout-path = "serial0:115200n8";
 
 		framebuffer: framebuffer@b8000000 {
@@ -62,10 +60,15 @@
 		};
 	};
 
-	memory {
-		ddr_device_type = <0x08>;
+	memory@80000000 {
 		device_type = "memory";
-		reg = <0x00 0x80000000 0x00 0x6a000000 0x00 0xf1c00000 0x00 0xe400000 0x08 0x00 0x00 0x3ab00000 0x08 0x40000000 0x01 0x40000000 0x08 0x3b100000 0x00 0x1e00000>;
+		reg = <
+			0x00 0x80000000  0x00 0x6a000000
+			0x00 0xf1c00000  0x00 0xe400000
+			0x08 0x00000000  0x00 0x3ab00000
+			0x08 0x40000000  0x01 0x40000000
+			0x08 0x3b100000  0x00 0x01e00000
+		>;
 	};
 
 	reserved-memory {
@@ -87,11 +90,9 @@
 		rmtfs_mem: memory@fe200000 {
 			compatible = "qcom,rmtfs-mem";
 			reg = <0x0 0xfe200000 0x0 0x280000>;
-			reg-names = "rmtfs";
 			qcom,client-id = <1>;
-			no-map;
-
 			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
+			no-map;
 		};
 
 		splash_region@b8000000 {
