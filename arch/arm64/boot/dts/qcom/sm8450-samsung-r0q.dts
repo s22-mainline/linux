@@ -45,6 +45,16 @@
 		};
 	};
 
+        battery: battery {
+                compatible = "simple-battery";
+
+                constant-charge-current-max-microamp = <3700000>;
+                charge-full-design-microamp-hours = <3700000>;
+                over-voltage-threshold-microvolt = <4500000>;
+                voltage-min-design-microvolt = <3400000>;
+                voltage-max-design-microvolt = <4460000>;
+        };
+
 	gpio-keys {
 		compatible = "gpio-keys";
 		autorepeat;
